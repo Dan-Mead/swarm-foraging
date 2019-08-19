@@ -1,0 +1,28 @@
+
+--------------------------------------------------------------------------------------------------------
+
+function ksp.cauchy(theta, mu, rho)
+	
+	return (1/(2 * math.pi)) * ((1 - rho^2) / (1 + rho^2 - 2*rho*math.cos(theta - mu)))
+end
+
+function ksp.cauchy_pdf(mu, rho)
+	
+	probs = {}
+	sum = 0
+	n = 1
+	
+	for i = -180, 180 do
+		
+		i = i * math.pi/180
+		probs[n] = ksp.cauchy(i, mu, rho)
+		sum = sum + probs[n]
+		n = n+1
+		
+	end
+	
+	return probs, sum
+end
+
+
+--------------------------------------------------------------------------------------------------------

@@ -1,0 +1,186 @@
+local common = {}
+
+function common.update()
+	
+	distance_travelled = distance_travelled + 0.5 * (robot.wheels.distance_left + robot.wheels.distance_right)
+	
+end
+
+function common.ground_check()
+	
+	target = 0
+	base = 0 
+	transit = 0
+	
+	for i = 1,4 do
+		if robot.motor_ground[i].value < 0.1 then
+			target = target + 1
+		elseif robot.motor_ground[i].value > 0.9 then
+			base = base + 1
+		else
+			transit = transit + 1
+			
+		end
+	end
+	
+	if transit == 4 then
+		current_location = "transit"
+	elseif target == 4 then
+		current_location = "target"
+	elseif base == 4 then
+		current_location = "base"
+	end
+	
+end
+
+function common.avoid() -- 5, 20
+	
+	prox_sensors = {left = 0, right = 0}
+	
+	for i = 1,24 do
+		if i <= 4 then
+			prox_sensors.left = prox_sensors.left + robot.proximity[i].value
+		elseif i >= 19 then 
+			prox_sensors.right = prox_sensors.right + robot.proximity[i].value
+
+		end
+	end
+	
+	if prox_sensors.right ~= 0 then
+		robot.wheels.set_velocity(-4, 8)
+	elseif prox_sensors.left ~= 0 then
+		robot.wheels.set_velocity(8,-4)
+	else
+		robot.wheels.set_velocity(8,8)
+		
+	end	
+	
+end
+
+function common.avoid_complex() 					-- complex method
+	
+	avoid_gain = 0.8
+	avoid_decay = 0.9
+	
+	
+	prox_sensors = {left = 0, right = 0}
+	
+	for i = 1,24 do
+		if i <= 5 then
+			prox_sensors.left = prox_sensors.left + robot.proximity[i].value
+		elseif i >= 20 then 
+			prox_sensors.right = prox_sensors.right + robot.proximity[i].value
+
+		end
+	end
+	
+	v_l = avoid_gain * (prox_sensors.left)
+	v_r = avoid_gain * (prox_sensors.right)
+	
+	if v_r >= v_l then
+		v_l = -v_r * 0.5
+		
+	else
+		v_r = -v_l * 0.5
+	end
+	
+	v_l = robot.wheels.velocity_left * avoid_decay + v_l
+	if math.abs(v_l) > 8 then
+		v_l = 8 * math.abs(v_l) / v_l
+	end
+	
+	v_r = robot.wheels.velocity_right * avoid_decay + v_r
+	if math.abs(v_r) > 8 then
+		v_r = 8 * math.abs(v_r) / v_r
+	end
+	
+	if prox_sensors.left ~= 0 or prox_sensors.right ~= 0 then
+		robot.wheels.set_velocity(v_l, v_r)
+	else
+		robot.wheels.set_velocity(8,8)
+	end
+	
+	
+end
+
+function common.turn_old(angle) -- function initialises the turning behaviour
+	
+	turn_angle = angle
+	
+	turn_distance = (robot.wheels.axis_length / 2) * angle
+	distance_turned = - robot.wheels.distance_left -- offset from last loop
+	current_behaviour = "turning"
+	
+end
+
+function common.turn(angle)
+	
+	heading_error = angle - (robot.wheels.distance_right - robot.wheels.distance_left) / robot.wheels.axis_length
+	
+	current_behaviour = "turning"
+	
+end
+
+function common.landmark_update(input_location)
+	
+	length = 0.5 * (robot.wheels.distance_left + robot.wheels.distance_right)
+	
+	bot_x = length * math.cos(robot.true_orientation)
+	bot_y = length * math.sin(robot.true_orientation)
+	
+	base_x = input_location.distance * math.cos(input_location.angle)
+	base_y = input_location.distance * math.sin(input_location.angle)
+	
+	new_x = bot_x + base_x
+	new_y = bot_y + base_y
+	
+	input_location.distance = math.sqrt(math.pow(new_x, 2) + math.pow(new_y, 2))
+	
+	input_location.angle = math.atan2(new_y, new_x)
+	
+	input_location.reference = input_location.angle - math.pi
+	
+	input_location.reference = angle_check(input_location.reference)
+	
+	return input_location
+	
+end
+
+function common.update_leds()
+	
+	if current_state == "returning" then
+		robot.leds.set_all_colors("green")
+	elseif current_state == "exploring" then
+		robot.leds.set_all_colors("red")
+	elseif current_state == "foraging" then
+		robot.leds.set_all_colors("red")
+	end
+	
+	if current_state == "returning" and current_behaviour == "moving_to_location" then
+		robot.leds.set_all_colors("blue")
+	elseif current_behaviour == "moving_to_location" then
+		robot.leds.set_all_colors("yellow")
+	end
+	
+	if broadcast_info.base.origin == true and current_state ~= "returning" then
+		robot.leds.set_all_colors("purple")
+	elseif broadcast_info.target.origin == true and current_state == "returning" then
+		robot.leds.set_all_colors("orange")
+	end
+	
+end
+
+function angle_check(angle)
+	
+	if angle > 2 * math.pi then
+		angle = angle - 2 * math.pi
+	elseif angle < 0 then
+		angle = angle + 2 * math.pi
+	end
+	
+	return angle
+end
+
+
+
+return common

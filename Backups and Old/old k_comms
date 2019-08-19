@@ -1,0 +1,32 @@
+function k_comms.process_data()
+	
+	currently_seen = {}
+	
+	for i = 1,#robot.range_and_bearing do
+		
+		if robot.range_and_bearing[i].data[1] == 2 and robot.range_and_bearing[i].range < 50 then
+		
+			id_num = robot.range_and_bearing[i].data[2]
+
+			--currently_seen[id_num] = { goal = robot.range_and_bearing[i].data[3], heading = robot.range_and_bearing[i].data[4]*2*math.pi/180 }
+			
+			add_interaction(time, id_num, robot.range_and_bearing[i].data[3], robot.range_and_bearing[i].data[4]*2*math.pi/180, robot.range_and_bearing[i].horizontal_bearing)
+			
+			--if last_seen[id_num] == nil then -- while clever this apparently wasn't coded last time
+			--	last_seen[id_num] = true	
+			--		
+			--end
+			
+		end
+	end
+	
+		
+		
+	--for i,val in pairs(last_seen) do							-- delete robots no longer encountered
+	--		
+	--	if currently_seen[i] == nil then
+	---		last_seen[i] = nil
+	--	end
+	---end
+	
+end

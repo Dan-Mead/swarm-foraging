@@ -1,0 +1,8 @@
+-- TODO:
+
+
+ARW -- Correlated, step size
+Site Fidelity -- Add bias and odometry
+Kasprok -- Add direction communication
+Ducatelle -- Add direct communication
+Combined -- Advanced Algorithm

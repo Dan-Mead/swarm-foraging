@@ -1,0 +1,8 @@
+robot.leds.set_single_color(1, 255, 255, 255)
+	robot.leds.set_single_color(12, 255, 255, 255)
+	robot.leds.set_single_color(3, 0, 255, 0)
+	robot.leds.set_single_color(4, 0, 255, 0)
+	robot.leds.set_single_color(6, 0, 0, 255)
+	robot.leds.set_single_color(7, 0, 0, 255)
+	robot.leds.set_single_color(9, 255, 0, 0)
+	robot.leds.set_single_color(10, 255, 0 , 0)

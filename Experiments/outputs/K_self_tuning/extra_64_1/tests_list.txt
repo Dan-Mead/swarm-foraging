@@ -1,0 +1,5 @@
+alltests_CRW_k_self_0
+alltests_CRW_k_self_5
+alltests_CRW_k_self_10
+alltests_CRW_k_self_20
+alltests_CRW_k_self_40
