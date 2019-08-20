@@ -1,0 +1,10 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 24|10
+Distribution = nest|
+Algorithm = BRW|Number of Robots = 24
+k_bias = 6
+BRW_k_bias_6_00.txt
+BRW_k_bias_6_01.txt
+BRW_k_bias_6_02.txt
+BRW_k_bias_6_03.txt
+BRW_k_bias_6_04.txt

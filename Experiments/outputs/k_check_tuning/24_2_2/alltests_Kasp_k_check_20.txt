@@ -1,0 +1,10 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 24|10
+Distribution = nest|
+Algorithm = Kasp|Arena = 3
+k_check = 20
+Kasp_k_check_20_00.txt
+Kasp_k_check_20_01.txt
+Kasp_k_check_20_02.txt
+Kasp_k_check_20_03.txt
+Kasp_k_check_20_04.txt

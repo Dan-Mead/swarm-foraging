@@ -428,35 +428,42 @@ if record == False:
 true_start_time = time.time()
 
 coverage = "nest"  # all
-rwg = 2 # best, 1.5 L, 1.0 H
-k_self = 0
-k_bias = 4
+
+obstacles = 0
+
+if obstacles == 0 or obstacles == 1:
+    rwg = 1.5 # best, 1.5 L, 1.0 H
+else:
+    rwg = 1
+
+k_self = 5 #best, 5 all
+k_bias = 5 #best, 5, all
 d_check = 20
-k_check = 5 # best  = 5
+k_check = 30 # best  = 30
 c_check = 10
 num_bots = 24
-obstacles = 1
 
-test_var = 'k_self'
+
+test_var = 'k_check'
 num_repeats = 5
 seeds = np.random.randint(1,9999, size = num_repeats)
 
-second_test_variable = 'RWG'
-second_test_value = rwg
+second_test_variable = 'Arena'
+second_test_value = obstacles + 1
 
 # dummy_test_values = [8,16,24]
 # dummy_test_variable = "bot_num"
 # for dummy_test_value in dummy_test_values:
 
-for k_self in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]:
+for k_check in [1, 10, 20, 30, 40, 50]:
 
     # num_bots = dummy_test_value
 
     variables = generate_variables(coverage, ticks_per_sec, rwm, rwg, k_self, k_bias, d_check, k_check, c_check, num_bots)
 
-    generate_test(record, variables, 'CRW', test_var, num_repeats, seeds)
+    # generate_test(record, variables, 'CRW', test_var, num_repeats, seeds)
     # generate_test(record, variables, 'BRW', test_var, num_repeats, seeds)
-    # generate_test(record, variables, 'Kasp', test_var, num_repeats, seeds)
+    generate_test(record, variables, 'Kasp', test_var, num_repeats, seeds)
     # generate_test(record, variables, 'Ducat', test_var, num_repeats, seeds)
     # generate_test(record, variables, 'Comp', test_var, num_repeats, seeds)
 
