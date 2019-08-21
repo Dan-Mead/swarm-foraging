@@ -1,0 +1,5 @@
+alltests_Comp_k_self_1
+alltests_Comp_k_self_2
+alltests_Comp_k_self_5
+alltests_Comp_k_self_10
+alltests_Comp_k_self_20

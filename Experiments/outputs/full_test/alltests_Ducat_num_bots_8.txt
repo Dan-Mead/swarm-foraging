@@ -1,0 +1,6 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 8|10
+Distribution = nest|
+Algorithm = Ducat|Arena = 2
+num_bots = 8
+Ducat_num_bots_8_00.txt

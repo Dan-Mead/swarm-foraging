@@ -1,0 +1,6 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 40|10
+Distribution = nest|
+Algorithm = CRW|Arena = 1
+num_bots = 40
+CRW_num_bots_40_00.txt

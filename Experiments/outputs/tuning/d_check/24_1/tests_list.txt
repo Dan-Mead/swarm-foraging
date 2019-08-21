@@ -1,0 +1,9 @@
+alltests_Ducat_d_check_1
+alltests_Ducat_d_check_2
+alltests_Ducat_d_check_5
+alltests_Ducat_d_check_10
+alltests_Ducat_d_check_20
+alltests_Ducat_d_check_30
+alltests_Ducat_d_check_40
+alltests_Ducat_d_check_50
+alltests_Ducat_d_check_100

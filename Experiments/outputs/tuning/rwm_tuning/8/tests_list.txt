@@ -1,0 +1,6 @@
+alltests_CRW_Random Walk Mean_10
+alltests_CRW_Random Walk Mean_10
+alltests_CRW_Random Walk Mean_50
+alltests_CRW_Random Walk Mean_100
+alltests_CRW_Random Walk Mean_150
+alltests_CRW_Random Walk Mean_200

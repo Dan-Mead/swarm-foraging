@@ -1,0 +1,10 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 24|10
+Distribution = nest|
+Algorithm = Ducat|Arena = 1
+d_check = 100
+Ducat_d_check_100_00.txt
+Ducat_d_check_100_01.txt
+Ducat_d_check_100_02.txt
+Ducat_d_check_100_03.txt
+Ducat_d_check_100_04.txt

@@ -1,0 +1,8 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 24|10
+Distribution = nest|
+Algorithm = CRW|Number of Robots = 24
+Random Walk Mean = 200
+CRW_test_200_00.txt
+CRW_test_200_01.txt
+CRW_test_200_02.txt

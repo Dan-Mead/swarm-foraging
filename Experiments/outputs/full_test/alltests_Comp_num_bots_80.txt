@@ -1,0 +1,6 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 80|10
+Distribution = nest|
+Algorithm = Comp|Arena = 2
+num_bots = 80
+Comp_num_bots_80_00.txt
