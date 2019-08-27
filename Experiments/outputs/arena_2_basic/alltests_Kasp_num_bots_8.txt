@@ -1,0 +1,15 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 8|10
+Distribution = nest|
+Algorithm = Kasp|Arena = 1
+num_bots = 8
+Kasp_num_bots_8_00.txt
+Kasp_num_bots_8_01.txt
+Kasp_num_bots_8_02.txt
+Kasp_num_bots_8_03.txt
+Kasp_num_bots_8_04.txt
+Kasp_num_bots_8_05.txt
+Kasp_num_bots_8_06.txt
+Kasp_num_bots_8_07.txt
+Kasp_num_bots_8_08.txt
+Kasp_num_bots_8_09.txt

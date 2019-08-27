@@ -1,0 +1,8 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 80|10
+Distribution = all|
+Algorithm = BRW|Arena = 1
+num_bots = 80
+BRW_num_bots_80_00.txt
+BRW_num_bots_80_01.txt
+BRW_num_bots_80_02.txt

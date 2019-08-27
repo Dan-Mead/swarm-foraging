@@ -1,0 +1,15 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 80|10
+Distribution = all|
+Algorithm = Comp|Arena = 0
+num_bots = 80
+Comp_num_bots_80_00.txt
+Comp_num_bots_80_01.txt
+Comp_num_bots_80_02.txt
+Comp_num_bots_80_03.txt
+Comp_num_bots_80_04.txt
+Comp_num_bots_80_05.txt
+Comp_num_bots_80_06.txt
+Comp_num_bots_80_07.txt
+Comp_num_bots_80_08.txt
+Comp_num_bots_80_09.txt

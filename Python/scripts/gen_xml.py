@@ -319,8 +319,8 @@ def generate_test(record, variables, test_type, test_variable, num_loops, seeds)
 
         if obstacles == 0:
 
-            nest_loc = [0, -(arena_size / 2 - 0.5), 0]
-            target_loc = [0, (arena_size / 2 - 0.5), 0]
+            nest_loc = [0, -(arena_size / 2 - 1.5), 0]
+            target_loc = [0, (arena_size / 2 - 1.5), 0]
 
         elif obstacles == 1:
             add_wall(6, 'x', [0,1,0])
@@ -438,34 +438,43 @@ else:
 
 k_self = 5 #best, 5 all
 k_bias = 5 #best, 5, all
-d_check = 20
+d_check = 30 # best = 30
 k_check = 30 # best  = 30
-c_check = 10
+c_check = 1
 num_bots = 24
 
 
-test_var = 'k_check'
-num_repeats = 5
+test_var = 'num_bots'
+num_repeats = 10
 seeds = np.random.randint(1,9999, size = num_repeats)
 
-second_test_variable = 'Arena'
-second_test_value = obstacles + 1
+second_test_variable = 'Arena' # plain text for legend
+second_test_value = obstacles
 
-# dummy_test_values = [8,16,24]
-# dummy_test_variable = "bot_num"
+# dummy_test_values = [10,50,100,150,200]
+# dummy_test_variable = "Random Walk Mean"
 # for dummy_test_value in dummy_test_values:
 
-for k_check in [1, 10, 20, 30, 40, 50]:
+for num_bots in [8, 24, 40, 64, 80]:
+# for k_bias in [1,2,5,8,10,20]:
+# for num_bots in [80]:
 
-    # num_bots = dummy_test_value
+    # rwm = dummy_test_value
+
+    k_bias = 5
 
     variables = generate_variables(coverage, ticks_per_sec, rwm, rwg, k_self, k_bias, d_check, k_check, c_check, num_bots)
 
-    # generate_test(record, variables, 'CRW', test_var, num_repeats, seeds)
-    # generate_test(record, variables, 'BRW', test_var, num_repeats, seeds)
+    generate_test(record, variables, 'CRW', test_var, num_repeats, seeds)
+    generate_test(record, variables, 'BRW', test_var, num_repeats, seeds)
     generate_test(record, variables, 'Kasp', test_var, num_repeats, seeds)
-    # generate_test(record, variables, 'Ducat', test_var, num_repeats, seeds)
-    # generate_test(record, variables, 'Comp', test_var, num_repeats, seeds)
+    generate_test(record, variables, 'Ducat', test_var, num_repeats, seeds)
+
+    k_bias = 10
+
+    variables = generate_variables(coverage, ticks_per_sec, rwm, rwg, k_self, k_bias, d_check, k_check, c_check, num_bots)
+
+    generate_test(record, variables, 'Comp', test_var, num_repeats, seeds)
 
 
 print("All Tests Finished")

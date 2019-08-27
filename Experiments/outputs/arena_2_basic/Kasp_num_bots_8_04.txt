@@ -1,0 +1,24 @@
+---- 	   	Begin Recorded Data	   	 ---- 
+time 	 | 	robot 	| 	 goal 
+1 = target	 0 = base 
+ 
+0 	 | 	fb1 	 | 	1
+0 	 | 	fb2 	 | 	1
+0 	 | 	fb2 	 | 	1
+0 	 | 	fb3 	 | 	1
+0 	 | 	fb4 	 | 	1
+0 	 | 	fb4 	 | 	1
+0 	 | 	fb5 	 | 	1
+0 	 | 	fb6 	 | 	1
+0 	 | 	fb6 	 | 	1
+0 	 | 	fb7 	 | 	1
+0 	 | 	fb7 	 | 	1
+0 	 | 	fb7 	 | 	1
+0 	 | 	fb8 	 | 	1
+5514 	 | 	fb2 	 | 	0
+5585 	 | 	fb3 	 | 	0
+6293 	 | 	fb1 	 | 	0
+9545 	 | 	fb8 	 | 	0
+11966 	 | 	fb7 	 | 	0
+17292 	 | 	fb7 	 | 	1
+17577 	 | 	fb5 	 | 	0

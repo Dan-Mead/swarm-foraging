@@ -1,0 +1,15 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 24|10
+Distribution = nest|
+Algorithm = BRW|Arena = 4
+num_bots = 24
+BRW_num_bots_24_00.txt
+BRW_num_bots_24_01.txt
+BRW_num_bots_24_02.txt
+BRW_num_bots_24_03.txt
+BRW_num_bots_24_04.txt
+BRW_num_bots_24_05.txt
+BRW_num_bots_24_06.txt
+BRW_num_bots_24_07.txt
+BRW_num_bots_24_08.txt
+BRW_num_bots_24_09.txt

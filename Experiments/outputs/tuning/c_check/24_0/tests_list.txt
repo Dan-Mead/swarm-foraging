@@ -1,9 +1,0 @@
-alltests_Comp_c_check_1
-alltests_Comp_c_check_2
-alltests_Comp_c_check_5
-alltests_Comp_c_check_10
-alltests_Comp_c_check_20
-alltests_Comp_c_check_30
-alltests_Comp_c_check_40
-alltests_Comp_c_check_50
-alltests_Comp_c_check_100

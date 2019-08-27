@@ -1,0 +1,15 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 40|10
+Distribution = nest|
+Algorithm = CRW|Arena = 4
+num_bots = 40
+CRW_num_bots_40_00.txt
+CRW_num_bots_40_01.txt
+CRW_num_bots_40_02.txt
+CRW_num_bots_40_03.txt
+CRW_num_bots_40_04.txt
+CRW_num_bots_40_05.txt
+CRW_num_bots_40_06.txt
+CRW_num_bots_40_07.txt
+CRW_num_bots_40_08.txt
+CRW_num_bots_40_09.txt

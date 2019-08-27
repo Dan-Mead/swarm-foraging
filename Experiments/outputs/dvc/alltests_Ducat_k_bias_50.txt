@@ -1,0 +1,8 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 64|10
+Distribution = nest|
+Algorithm = Ducat|Arena = 1
+k_bias = 50
+Ducat_k_bias_50_00.txt
+Ducat_k_bias_50_01.txt
+Ducat_k_bias_50_02.txt

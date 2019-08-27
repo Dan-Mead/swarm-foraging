@@ -1,0 +1,15 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 80|10
+Distribution = nest|
+Algorithm = Ducat|Arena = 1
+num_bots = 80
+Ducat_num_bots_80_00.txt
+Ducat_num_bots_80_01.txt
+Ducat_num_bots_80_02.txt
+Ducat_num_bots_80_03.txt
+Ducat_num_bots_80_04.txt
+Ducat_num_bots_80_05.txt
+Ducat_num_bots_80_06.txt
+Ducat_num_bots_80_07.txt
+Ducat_num_bots_80_08.txt
+Ducat_num_bots_80_09.txt

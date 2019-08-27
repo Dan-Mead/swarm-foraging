@@ -442,13 +442,13 @@ def plot_final_totals(all_data, test_names, metadatas, type = "norm"):
             plt.errorbar(x_labels[0, :], means[0, :], yerr=stdevs[0, :] / num_samples, capsize=2, marker='o', mec = 'k', linestyle='--', label=algorithms[0])
             plt.legend(title="Algorithm:", loc = 'upper left')
         else:
-            plt.errorbar(x_labels[0, :], means[0, :], yerr=stdevs[0, :] / num_samples, capsize=2, marker='o', mec = 'k', linestyle='--', label=metadatas[0]['var_2_val'])
+            plt.errorbar(x_labels[0, :], means[0, :], yerr=stdevs[0, :], capsize=2, marker='o', mec = 'k', linestyle='--', label=metadatas[0]['var_2_val'])
             plt.legend(title=metadatas[0]['var_2_name'] + ":", loc = 'upper left')
     else:
 
         for i in range(len(algorithms)):
             plt.errorbar(x_labels[i,:], means[i,:], yerr=stdevs[i,:] / num_samples, capsize=2, marker='o', mec = 'k', linestyle='--', label = algorithms[i])
-        plt.legend(title="Algorithm:", loc = 'upper left')
+        plt.legend(title="Algorithm:")#, loc = 'upper left')
 
     plt.xlabel(metadatas[n]['var_name'])
 
@@ -458,6 +458,8 @@ def plot_final_totals(all_data, test_names, metadatas, type = "norm"):
         y_string = "Mean number of transits per robot"    # plt.xticks(rotation='vertical', fontsize=8)
 
     plt.ylabel(y_string)
+
+    return means, x_labels, stdevs, metadatas[0]['var_2_val']
 
 def return_heatmap_data(all_data, test_names, metadatas, type = "norm"):
 
@@ -541,6 +543,10 @@ def plot_single_folder(path, folder_name, display, type):
 
 def plot_multi_folder(path, folders, display, type):
 
+    all_y1s = []
+    all_y2s = []
+    all_stdevs = []
+
     for folder_name in folders:
 
         folder_path = path + folder_name + "/"
@@ -558,7 +564,45 @@ def plot_multi_folder(path, folders, display, type):
         elif display == 'transit':
             plot_average_transition(all_data, test_names, metadatas)
         elif display == 'totals':
-            plot_final_totals(all_data, test_names, metadatas, type)
+            means, x_labels, stdevs, arena = plot_final_totals(all_data, test_names, metadatas, type)
+
+        arg = np.argmax(means)
+
+        all_y1s.append(x_labels[0, arg])
+        all_y2s.append(means[0, arg])
+        all_stdevs.append(stdevs[0, arg])
+
+
+    all_xs = np.array([1.14, 1.16, 1.29, 1.25, 1.473])
+
+    sorted_args = np.argsort(all_xs)
+    all_xs = (all_xs[sorted_args])
+
+    all_y1s = np.array(all_y1s)
+    all_y2s = np.array(all_y2s)
+    all_stdevs = np.array(all_stdevs)
+
+    all_y1s = (all_y1s[sorted_args])
+    all_y2s = (all_y2s[sorted_args])
+    all_stdevs = (all_stdevs[sorted_args])
+
+    p2, ax1 = plt.subplots()
+    plt.plot(all_xs, all_y1s,'bd--', mec = 'k', label = 'Optimal Values')
+    plt.xlabel("Arena Fractal Dimension")
+    plt.ylabel("Optimal Value")
+    # colour = next(ax._get_lines.prop_cycler)['color']
+
+    ax2 = ax1.twinx()
+    plt.errorbar(all_xs, all_y2s, yerr=all_stdevs, color = 'r', capsize=2, marker='o', mec = 'k', linestyle='--', label = 'Optimal Totals')
+    if type == "raw":
+        y_string = "Mean number of transits"
+    elif type == "norm":
+        y_string = "Mean number of transits per robot"    # plt.xticks(rotation='vertical', fontsize=8)
+
+    plt.ylabel(y_string, rotation = 270, labelpad=16)
+    ax1.legend(loc = 'upper left')
+    ax2.legend(loc = 'upper right')
+
 
 def plot_heatmap(path, folders, type):
 
@@ -600,82 +644,155 @@ def plot_heatmap(path, folders, type):
     plt.ylabel('Random walk step size gain')
     plt.xlabel('$\kappa_c$')
 
+def plot_final(path, folder_name, display, type):
+
+    folder_path = path + folder_name + "/"
+
+    all_data, test_names, metadatas = data_mine(folder_path)
+
+    plot_final_graph(all_data, test_names, metadatas, type)
+
+
+def plot_final_graph(all_data, test_names, metadatas, type = "norm"):
+
+    ax = plt.gca()
+
+    algorithms = []
+
+    for i in metadatas:
+        algorithms.append(i['algorithm'])
+
+    algorithms = list(set(algorithms))
+    algorithms.sort(key = algorithm_sort)
+
+    input_indexes = np.zeros(len(algorithms))
+
+    num_samples = (all_data[test_names[0]].shape[0])
+
+    means = np.zeros([len(algorithms), int(len(test_names) / len(algorithms))])
+    stdevs = np.zeros([len(algorithms), int(len(test_names) / len(algorithms))])
+
+    maxes = np.zeros([len(algorithms), int(len(test_names) / len(algorithms))])
+    mins = np.zeros([len(algorithms), int(len(test_names) / len(algorithms))])
+
+    x_labels = np.zeros([len(algorithms), int(len(test_names) / len(algorithms))])
+
+    for n, name in enumerate(test_names):
+
+        data = all_data[name]
+
+        cumulatives = np.zeros([len(data), metadatas[n]['tick_num'] + 1])
+
+        for m, test in enumerate(data):
+
+            test[:, 0] = 0  # adjust for initial
+
+            totals = np.sum(test, axis=0)
+
+            cumulatives[m,:] = np.cumsum(totals)
+
+        for index, val in enumerate(algorithms):
+
+            if metadatas[n]['algorithm'] == val:
+                break
+
+        if type == 'norm':
+            means[index, int(input_indexes[index])] = np.mean(cumulatives[:, -1]/ metadatas[n]['bot_num'], axis=0)
+            stdevs[index, int(input_indexes[index])] = np.std(cumulatives[:, -1] / metadatas[n]['bot_num'], axis=0)
+
+            maxes[index, int(input_indexes[index])] = np.max(cumulatives[:, -1] / metadatas[n]['bot_num'], axis=0)
+            mins[index, int(input_indexes[index])] = np.min(cumulatives[:, -1] / metadatas[n]['bot_num'], axis=0)
+
+
+        elif type == 'raw':
+
+            means[index, int(input_indexes[index])] = np.mean(cumulatives[:, -1])
+            stdevs[index, int(input_indexes[index])] = np.std(cumulatives[:, -1])
+
+            maxes[index, int(input_indexes[index])] = np.max(cumulatives[:, -1])
+            mins[index, int(input_indexes[index])] = np.min(cumulatives[:, -1])
+
+        if metadatas[0]['var_name'] == 'Coverage' or metadatas[0]['var_name'] == 'Base Location':
+            x_labels[index, int(input_indexes[index])] = (metadatas[n]['var_val'])
+        else:
+            x_labels[index, int(input_indexes[index])] = (float(metadatas[n]['var_val']))
+
+        input_indexes[index] += 1
+
+    markers = ['X', 'v', 's', 'o', 'd']
+
+    # plt.fill_between(xs / tps, maxes, mins, color = colour, alpha = 0.2)
+
+    if len(algorithms) == 1:
+
+        colour = next(ax._get_lines.prop_cycler)['color']
+
+        if metadatas[0]['var_2_name'] == 'Algorithm':
+            plt.errorbar(x_labels[0, :], means[0, :], yerr=stdevs[0, :] / num_samples, capsize=2, color=colour, marker= markers, mec = 'k', linestyle='--', label=algorithms[0])
+            plt.legend(title="Algorithm:", loc = 'upper left')
+        else:
+            plt.errorbar(x_labels[0, :], means[0, :], yerr=stdevs[0, :] / num_samples, capsize=2, color=colour, marker= markers, mec = 'k', linestyle='--', label=metadatas[0]['var_2_val'])
+            plt.legend(title=metadatas[0]['var_2_name'] + ":", loc = 'upper left')
+
+        # plt.fill_between(x_labels[0, :], means[0, :] + maxes[0, :], means[0, :] - mins[0, :], color=colour, alpha=0.5)
+
+    else:
+        for i in range(len(algorithms)):
+
+            colour = next(ax._get_lines.prop_cycler)['color']
+
+            plt.errorbar(x_labels[i,:], means[i,:], yerr=stdevs[i,:], capsize=2, color=colour, marker= 'o' , mec = 'k', linestyle='--', label = algorithms[i])
+            # plt.fill_between(x_labels[i, :], means[i, :] + stdevs[i, :], means[i, :] - stdevs[i, :], color=colour, alpha=0.25)
+        plt.legend(title="Algorithm:")#, loc = 'upper left')
+
+
+
+    plt.xlabel(metadatas[n]['var_name'])
+
+    if type == "raw":
+        y_string = "Mean number of transits"
+    elif type == "norm":
+        y_string = "Mean number of transits per robot"    # plt.xticks(rotation='vertical', fontsize=8)
+
+    plt.ylabel(y_string)
 
 
 font = {'size' : 11}
 matplotlib.rc('font', **font)
 
-path = path + 'k_check_tuning/'
+# path = path + 'tuning/independence_testing/'
+# path = path + 'mega_test/'
 
 
 display = 'totals' #mean, all, first, transit, totals
-type = "raw"  # norm, raw
+type = "norm"  # norm, raw
 
-# folder_name = "24_2_2"
+# folder_name = "test"
 # plot_single_folder(path, folder_name, display, type)
 
 # folders = ["rwg_1.0", "rwg_1.25", "rwg_1.50", "rwg_1.75", "rwg_2.0"]
 # plot_heatmap(path, folders, type)
 
-# folders = ["8_0", "8_1", "8_2"]
-folders = ["24_0", "24_0_2", "24_1", "24_1_2", "24_2", "24_2_2"]
-folders = ["24_1_2", "24_2_2"]
-# folders = ["8_0", "24_0", "64_0"]
-# folders = ["8_1", "24_1", "64_1"]
-# folders = ["8_2", "24_2", "64_2"]
-plot_multi_folder(path, folders, display, type)
+# folders = ["c_check_0", "c_check_1", "c_check_2", "c_check_3", "c_check_4"]
+# plot_multi_folder(path, folders, display, type)
 
+folder_name = "arena_1_centre"
+plot_final(path, folder_name, display, type)
+# #
+plt.tight_layout()
+plt.show()
+
+# plt.savefig('Results/C_check_tuning.png', bbox_inches='tight')
+plt.savefig('Results/Arena_1_centre_norm', bbox_inches='tight')
+
+display = 'totals' #mean, all, first, transit, totals
+type = "raw"  # norm, raw
+
+plt.clf()
+
+plot_final(path, folder_name, display, type)
 
 plt.tight_layout()
 plt.show()
 
-plt.savefig('Results/Tuning/24_bots')
-
-# display = 'totals' #mean, all, first, transit, totals
-# type = "raw"  # norm, raw
-#
-# plt.clf()
-#
-# folders = ["8_0", "24_0", "64_0"]
-# plot_multi_folder(path, folders, display, type)
-# plt.tight_layout()
-# plt.savefig('Results/Tuning/Totals_0')
-#
-# plt.clf()
-#
-# folders = ["8_1", "24_1", "64_1"]
-# plot_multi_folder(path, folders, display, type)
-# plt.tight_layout()
-# plt.savefig('Results/Tuning/Totals_1')
-#
-# plt.clf()
-#
-# folders = ["8_2", "24_2", "64_2"]
-# plot_multi_folder(path, folders, display, type)
-# plt.tight_layout()
-# plt.savefig('Results/Tuning/Totals_2')
-#
-#
-# display = 'first' #mean, all, first, transit, totals
-# type = "norm"  # norm, raw
-#
-# plt.clf()
-#
-# folders = ["8_0", "24_0", "64_0"]
-# plot_multi_folder(path, folders, display, type)
-# plt.tight_layout()
-# plt.savefig('Results/Tuning/First_0')
-#
-# plt.clf()
-#
-# folders = ["8_1", "24_1", "64_1"]
-# plot_multi_folder(path, folders, display, type)
-# plt.tight_layout()
-# plt.savefig('Results/Tuning/First_1')
-#
-# plt.clf()
-#
-# folders = ["8_2", "24_2", "64_2"]
-# plot_multi_folder(path, folders, display, type)
-# plt.tight_layout()
-# plt.savefig('Results/Tuning/First_2')
+plt.savefig('Results/Arena_1_centre_raw', bbox_inches='tight')

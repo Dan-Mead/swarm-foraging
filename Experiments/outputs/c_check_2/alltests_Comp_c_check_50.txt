@@ -1,0 +1,15 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 24|10
+Distribution = nest|
+Algorithm = Comp|Arena = 2
+c_check = 50
+Comp_c_check_50_00.txt
+Comp_c_check_50_01.txt
+Comp_c_check_50_02.txt
+Comp_c_check_50_03.txt
+Comp_c_check_50_04.txt
+Comp_c_check_50_05.txt
+Comp_c_check_50_06.txt
+Comp_c_check_50_07.txt
+Comp_c_check_50_08.txt
+Comp_c_check_50_09.txt

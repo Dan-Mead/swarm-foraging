@@ -1,0 +1,8 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 8|10
+Distribution = all|
+Algorithm = CRW|Arena = 1
+num_bots = 8
+CRW_num_bots_8_00.txt
+CRW_num_bots_8_01.txt
+CRW_num_bots_8_02.txt

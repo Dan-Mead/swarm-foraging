@@ -6,5 +6,3 @@ c_check = 5
 Comp_c_check_5_00.txt
 Comp_c_check_5_01.txt
 Comp_c_check_5_02.txt
-Comp_c_check_5_03.txt
-Comp_c_check_5_04.txt

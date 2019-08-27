@@ -1,0 +1,15 @@
+Sim Time / TPS = 20000|10
+Number of Robots / Arena Size = 24|10
+Distribution = nest|
+Algorithm = Comp|Arena = 2
+k_bias = 10
+Comp_k_bias_10_00.txt
+Comp_k_bias_10_01.txt
+Comp_k_bias_10_02.txt
+Comp_k_bias_10_03.txt
+Comp_k_bias_10_04.txt
+Comp_k_bias_10_05.txt
+Comp_k_bias_10_06.txt
+Comp_k_bias_10_07.txt
+Comp_k_bias_10_08.txt
+Comp_k_bias_10_09.txt
