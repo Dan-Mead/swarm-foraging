@@ -3,7 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 
+def make_patch_spines_invisible(ax):
+    ax.set_frame_on(True)
+    ax.patch.set_visible(False)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+
+
 # Find directory to outputs.
+
 
 print(os.path.abspath(os.curdir))
 
@@ -586,22 +594,64 @@ def plot_multi_folder(path, folders, display, type):
     all_y2s = (all_y2s[sorted_args])
     all_stdevs = (all_stdevs[sorted_args])
 
-    p2, ax1 = plt.subplots()
-    plt.plot(all_xs, all_y1s,'bd--', mec = 'k', label = 'Optimal Values')
+    plt.gca().set_prop_cycle(None)
+
+    original_val = np.ones(5) * 10
+
+    p2 = plt.subplots(figsize=(12*(3/4),5*(3/4)))
+    ax1 = plt.subplot(1,2,1)
+    l1_2, = ax1.plot(all_xs, original_val,'ko--', mec = 'k', label = '\'Standard\' Values')
+    l1, = ax1.plot(all_xs, all_y1s,'o--', mec = 'k', label = 'Optimal Values')
     plt.xlabel("Arena Fractal Dimension")
-    plt.ylabel("Optimal Value")
-    # colour = next(ax._get_lines.prop_cycler)['color']
+    plt.ylabel("Composite Bias ($\kappa_b$)")
+    colour = next(ax._get_lines.prop_cycler)['color']
+    colour = next(ax._get_lines.prop_cycler)['color']
 
-    ax2 = ax1.twinx()
-    plt.errorbar(all_xs, all_y2s, yerr=all_stdevs, color = 'r', capsize=2, marker='o', mec = 'k', linestyle='--', label = 'Optimal Totals')
-    if type == "raw":
-        y_string = "Mean number of transits"
-    elif type == "norm":
-        y_string = "Mean number of transits per robot"    # plt.xticks(rotation='vertical', fontsize=8)
+    ax1.legend()
 
-    plt.ylabel(y_string, rotation = 270, labelpad=16)
-    ax1.legend(loc = 'upper left')
-    ax2.legend(loc = 'upper right')
+    original_ys = np.array([206.7, 101.6, 57.2, 61.4, 116.0])
+    original_stds = np.array([10.7, 8.0, 6.0, 11.2, 37.2])
+
+    final_stds = (np.sqrt(original_stds ** 2 + all_stdevs ** 2))
+
+    final_ys_percent = 100 * (all_y2s - original_ys) / original_ys
+    final_ys_std = (all_y2s - original_ys) / final_stds
+
+
+    ax2 = plt.subplot(1,2,2, sharex = ax1)
+
+    # final_stds = np.sqrt((final_stds / (all_y2s - original_ys)) ** 2 + (original_stds / original_ys) **2) * final_ys
+
+    # plt.errorbar(all_xs, final_ys, yerr=final_stds, color = colour, capsize=2, marker='d', mec = 'k', linestyle='--', label = 'Optimal Totals')
+    l2, = ax2.plot(all_xs, final_ys_percent, color = colour, marker='d', mec = 'k', linestyle='--', label = 'Residuals')
+    y_string = "Mean change vs. standard profile (%)"
+
+    plt.ylabel(y_string)#, rotation = 270, labelpad=16)
+    plt.xlabel("Arena Fractal Dimension")
+    ax3 = ax2.twinx()
+
+    colour = next(ax._get_lines.prop_cycler)['color']
+
+    # ax3.spines["right"].set_position(("axes", 1.2))
+    # make_patch_spines_invisible(ax3)
+    # ax3.spines["right"].set_visible(True)
+
+    l3, = ax3.plot(all_xs, final_ys_std, color=colour, marker='d', mec='k', linestyle='--', label='Residuals')
+    y_string = "Mean change vs. standard profile ($\sigma$)"
+    plt.ylabel(y_string, rotation=270, labelpad=16)
+
+    ax3.legend([l2, l3], np.array(['Percentage Residuals', 'Normalised Residuals']))
+
+    # ax1.yaxis.label.set_color(l1.get_color())
+    ax2.yaxis.label.set_color(l2.get_color())
+    ax3.yaxis.label.set_color(l3.get_color())
+
+    # ax1.tick_params(axis='y', colors=l1.get_color())
+    ax2.tick_params(axis='y', colors=l2.get_color())
+    ax3.tick_params(axis='y', colors=l3.get_color())
+
+    print(np.mean(final_ys_percent))
+    print(np.mean(final_ys_std))
 
 
 def plot_heatmap(path, folders, type):
@@ -756,8 +806,12 @@ def plot_final_graph(all_data, test_names, metadatas, type = "norm"):
 
     plt.ylabel(y_string)
 
+    print(stdevs[4,1])
+    print(means[4,1])
 
-font = {'size' : 11}
+
+font = {'size' : 10}
+# font = {'size' : 11}
 matplotlib.rc('font', **font)
 
 # path = path + 'tuning/independence_testing/'
@@ -765,34 +819,37 @@ matplotlib.rc('font', **font)
 
 
 display = 'totals' #mean, all, first, transit, totals
-type = "norm"  # norm, raw
+type = "raw"  # norm, raw
 
 # folder_name = "test"
 # plot_single_folder(path, folder_name, display, type)
 
-# folders = ["rwg_1.0", "rwg_1.25", "rwg_1.50", "rwg_1.75", "rwg_2.0"]
+# folders = ["q_5", "q_10", "q_20", "q_40"]
 # plot_heatmap(path, folders, type)
 
+# folders = ["rwg_0", "rwg_1", "rwg_2", "rwg_3", "rwg_4"]
 # folders = ["c_check_0", "c_check_1", "c_check_2", "c_check_3", "c_check_4"]
-# plot_multi_folder(path, folders, display, type)
+# folders = ["k_self_0", "k_self_1", "k_self_2", "k_self_3", "k_self_4"]
+folders = ["k_bias_0", "k_bias_1", "k_bias_2", "k_bias_3", "k_bias_4"]
+plot_multi_folder(path, folders, display, type)
 
-folder_name = "arena_1_centre"
-plot_final(path, folder_name, display, type)
-# #
-plt.tight_layout()
-plt.show()
-
-# plt.savefig('Results/C_check_tuning.png', bbox_inches='tight')
-plt.savefig('Results/Arena_1_centre_norm', bbox_inches='tight')
-
-display = 'totals' #mean, all, first, transit, totals
-type = "raw"  # norm, raw
-
-plt.clf()
-
-plot_final(path, folder_name, display, type)
+# folder_name = "arena_rand"
+# plot_final(path, folder_name, display, type)
 
 plt.tight_layout()
 plt.show()
 
-plt.savefig('Results/Arena_1_centre_raw', bbox_inches='tight')
+plt.savefig('Results/K_bias_tuning_sep.png', bbox_inches='tight')
+# plt.savefig('Results/Arena_1_centre_norm', bbox_inches='tight')
+#
+# display = 'totals' #mean, all, first, transit, totals
+# type = "raw"  # norm, raw
+#
+# plt.clf()
+#
+# plot_final(path, folder_name, display, type)
+#
+# plt.tight_layout()
+# plt.show()
+#
+# plt.savefig('Results/Arena_1_centre_raw', bbox_inches='tight')

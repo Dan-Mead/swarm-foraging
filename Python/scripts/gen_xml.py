@@ -429,7 +429,7 @@ true_start_time = time.time()
 
 coverage = "nest"  # all
 
-obstacles = 0
+obstacles = 1
 
 if obstacles == 0 or obstacles == 1:
     rwg = 1.5 # best, 1.5 L, 1.0 H
@@ -441,40 +441,41 @@ k_bias = 5 #best, 5, all
 d_check = 30 # best = 30
 k_check = 30 # best  = 30
 c_check = 1
-num_bots = 24
+num_bots = 64
 
 
-test_var = 'num_bots'
-num_repeats = 10
+test_var = 'test'
+num_repeats = 3
 seeds = np.random.randint(1,9999, size = num_repeats)
 
 second_test_variable = 'Arena' # plain text for legend
 second_test_value = obstacles
 
-# dummy_test_values = [10,50,100,150,200]
-# dummy_test_variable = "Random Walk Mean"
+dummy_test_value = 40
+dummy_test_variable = "Quorum"
 # for dummy_test_value in dummy_test_values:
 
-for num_bots in [8, 24, 40, 64, 80]:
+# for num_bots in [8, 24, 40, 64, 80]:
 # for k_bias in [1,2,5,8,10,20]:
-# for num_bots in [80]:
+for num_bots in [64]:
 
     # rwm = dummy_test_value
 
-    k_bias = 5
-
+    # k_bias = 5
+    #
     variables = generate_variables(coverage, ticks_per_sec, rwm, rwg, k_self, k_bias, d_check, k_check, c_check, num_bots)
-
-    generate_test(record, variables, 'CRW', test_var, num_repeats, seeds)
-    generate_test(record, variables, 'BRW', test_var, num_repeats, seeds)
+    #
+    # generate_test(record, variables, 'CRW', test_var, num_repeats, seeds)
+    # generate_test(record, variables, 'BRW', test_var, num_repeats, seeds)
     generate_test(record, variables, 'Kasp', test_var, num_repeats, seeds)
-    generate_test(record, variables, 'Ducat', test_var, num_repeats, seeds)
+    # generate_test(record, variables, 'Ducat', test_var, num_repeats, seeds)
 
-    k_bias = 10
+    # k_bias = 10
 
-    variables = generate_variables(coverage, ticks_per_sec, rwm, rwg, k_self, k_bias, d_check, k_check, c_check, num_bots)
+    # variables = generate_variables(coverage, ticks_per_sec, rwm, rwg, k_self, k_bias, d_check, k_check, c_check, num_bots)
+    #
+    # generate_test(record, variables, 'Comp', test_var, num_repeats, seeds)
 
-    generate_test(record, variables, 'Comp', test_var, num_repeats, seeds)
 
 
 print("All Tests Finished")

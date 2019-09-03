@@ -4,7 +4,7 @@
   
   
   <framework>
-    <experiment length="2000" random_seed="4694" ticks_per_second="10" />
+    <experiment length="2000" random_seed="5934" ticks_per_second="10" />
     <system threads="8" />
   </framework>
 	
@@ -53,7 +53,7 @@
 	<range_and_bearing implementation="medium" medium="rab" show_rays="true" />	
 
       </sensors>
-      <params script="./composite.lua" />
+      <params script="./kasprzok.lua" />
      </lua_controller>
 
 
@@ -80,7 +80,7 @@
 
 
 
-  <foot-bot id="nest" rab_range="1"><body orientation="90, 0, 0" position="0, -3.5, 0" /><controller config="nestbot" /></foot-bot><foot-bot id="target" rab_range="1"><body orientation="270, 0, 0" position="0, 3.5, 0" /><controller config="foodbot" /></foot-bot><distribute><position max="1.9, -2.45, 0" method="uniform" min="-1.9, -4.55, 0" /><orientation max="360,0,0" method="uniform" min="0,0,0" /><entity base_num="1" max_trials="100" quantity="80"><foot-bot id="fb"><controller config="agents" /></foot-bot></entity></distribute></arena>
+  <box id="wall6" movable="false" size="6, 0.05, 0.2"><body orientation="0, 0, 0" position="0, 1, 0" /></box><box id="wall7" movable="false" size="3, 0.05, 0.2"><body orientation="0, 0, 0" position="-2.5, -1, 0" /></box><box id="wall8" movable="false" size="3, 0.05, 0.2"><body orientation="0, 0, 0" position="2.5, -1, 0" /></box><foot-bot id="nest" rab_range="1"><body orientation="90, 0, 0" position="0, -4.5, 0" /><controller config="nestbot" /></foot-bot><foot-bot id="target" rab_range="1"><body orientation="270, 0, 0" position="0, 4.5, 0" /><controller config="foodbot" /></foot-bot><distribute><position max="1.8, -3.5, 0" method="uniform" min="-1.8, -5.0, 0" /><orientation max="360,0,0" method="uniform" min="0,0,0" /><entity base_num="1" max_trials="100" quantity="64"><foot-bot id="fb"><controller config="agents" /></foot-bot></entity></distribute></arena>
 
   
   
